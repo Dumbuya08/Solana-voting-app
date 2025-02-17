@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Voting App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <h2>Voting App</h2>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#proposals">Proposals</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <h1 class="animated-text">Decentralized Voting System</h1>
+            <button id="connectWallet">Connect Wallet</button>
+            <div class="input-container">
+                <input type="text" id="proposalInput" placeholder="Enter proposal title...">
+                <button id="submitProposal">Submit Proposal</button>
+            </div>
+            <div id="proposals" class="proposal-list"></div>
+        </main>
+    </div>
+</body>
+</html>
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #1a1a2e;
+    color: white;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+}
+.app-container {
+    display: flex;
+    width: 100%;
+}
+.sidebar {
+    width: 250px;
+    background: #162447;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar h2 {
+    color: #ffcc00;
+    margin-bottom: 20px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar li {
+    margin: 20px 0;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+.sidebar a:hover {
+    color: #ffcc00;
+}
+.main-content {
+    margin-left: 270px;
+    padding: 40px;
+    width: 100%;
+    text-align: center;
+}
+.animated-text {
+    font-size: 2.5em;
+    opacity: 0;
+}
+.input-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+input {
+    padding: 10px;
+    width: 60%;
+    border-radius: 5px;
+    border: none;
+}
+button {
+    background: #ffcc00;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover {
+    background: #e6b800;
+}
+.proposal-list {
+    margin-top: 20px;
+}
+
+  </style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.to(".animated-text", {opacity: 1, duration: 1, y: 20, ease: "power2.out"});
+    gsap.from(".sidebar a", {opacity: 0, x: -20, stagger: 0.2, duration: 1, ease: "power2.out"});
+    const connectWallet = document.getElementById("connectWallet");
+    const submitProposal = document.getElementById("submitProposal");
+    connectWallet.addEventListener("click", () => alert("Wallet Connected"));
+    submitProposal.addEventListener("click", () => alert("Proposal Submitted"));
+});
+
+  </script>
