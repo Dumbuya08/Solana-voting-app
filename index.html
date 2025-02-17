@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/@solana/web3.js/1.31.0/web3.min.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -33,8 +34,7 @@
 </body>
 </html>
 
-      <style>
-
+<style>
 body {
     font-family: 'Poppins', sans-serif;
     background: #1a1a2e;
@@ -109,13 +109,54 @@ button:hover {
     border-radius: 5px;
 }
 </style>
-      <script>
-document.addEventListener("DOMContentLoaded", () => {
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
     gsap.to(".animated-text", {opacity: 1, duration: 1, y: 20, ease: "power2.out"});
     const connectWallet = document.getElementById("connectWallet");
     const submitProposal = document.getElementById("submitProposal");
-    connectWallet.addEventListener("click", () => alert("Wallet Connected"));
-    submitProposal.addEventListener("click", () => alert("Proposal Submitted"));
+    let wallet;
+    
+    connectWallet.addEventListener("click", async () => {
+        if (window.solana) {
+            try {
+                wallet = await window.solana.connect();
+                alert("Wallet Connected: " + wallet.publicKey.toString());
+            } catch (error) {
+                console.error("Wallet connection failed", error);
+            }
+        } else {
+            alert("Please install a Solana wallet like Phantom");
+        }
+    });
+    
+    submitProposal.addEventListener("click", async () => {
+        const proposalTitle = document.getElementById("proposalInput").value;
+        if (!wallet) {
+            alert("Connect your wallet first");
+            return;
+        }
+        
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'));
+        const transaction = new solanaWeb3.Transaction();
+        
+        const instruction = new solanaWeb3.TransactionInstruction({
+            keys: [{ pubkey: wallet.publicKey, isSigner: true, isWritable: true }],
+            programId: new solanaWeb3.PublicKey("Your_Program_ID_Here"),
+            data: new TextEncoder().encode(proposalTitle),
+        });
+        
+        transaction.add(instruction);
+        try {
+            const signature = await solanaWeb3.sendAndConfirmTransaction(
+                connection,
+                transaction,
+                [wallet]
+            );
+            alert("Proposal Submitted: " + signature);
+        } catch (error) {
+            console.error("Transaction failed", error);
+        }
+    });
 });
-
-        </script>
+</script>
